@@ -23,3 +23,79 @@ def test_find_key():
 
     assert find_key(line, 2) == (0, 2)
     assert find_key(line, 5) == (0, 5)
+
+
+def test_generate_mobile_zone():
+    layout = [
+        [0 , 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [11, 15, 14]
+    ]
+
+    start = 4
+
+    available_zones = [
+        [
+            [0, 1],
+            [3, 4],
+            [6, 7],
+            [11, 15], # zone left
+        ],
+        [
+            [6, 7, 8],
+            [11, 15, 14], # zone down
+        ],
+        [
+            [0, 1, 2],
+            [3, 4, 5], # zone up
+        ],
+        [
+            [1, 2],
+            [4, 5],
+            [7, 8],
+            [15, 14] # zone right
+        ]
+    ]
+
+    zones = generate_zones(start, layout)
+    assert all([zone in zones for zone in available_zones])
+
+
+def test_generate_desktop_zone():
+    start = 5
+    layout = [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+    ]
+
+    available_zones = [
+        [
+            [1, 2, 3, 4, 5],
+        ],
+        [
+            [5, 6, 7, 8, 9],
+        ]
+    ]
+    zones = generate_zones(start, layout)
+    assert all([zone in zones for zone in available_zones])
+
+    start = 3
+    layout = [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+    ]
+
+    available_zones = [
+        [
+            [1, 2, 3, 4, 5],
+        ],
+        [
+            [3, 4, 5, 6, 7]
+        ]
+    ]
+
+    zones = generate_zones(start, layout)
+    assert all([zone in zones for zone in available_zones])
+
+
+
+
