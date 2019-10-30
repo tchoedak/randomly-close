@@ -5,12 +5,7 @@ directions = ['up', 'down', 'left', 'right']
 
 minimum_random_keys_count = 5
 
-mobile = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [None, 0, None]
-]
+mobile = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [None, 0, None]]
 
 desktop = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]]
 
@@ -38,7 +33,7 @@ def find_key(layout, search_key):
                 return j, i
 
 
-def randomly_close(n, layout=mobile):
+def randomly_close(layout=mobile, length=5):
     '''
     Generate a sequence of numbers that are near each other, randomly.
 
@@ -53,7 +48,9 @@ def randomly_close(n, layout=mobile):
     print(f'\nRandom key selected {start} \n')
 
     if len(layout) == 1:
-        range_limiter = 5 # increase the range limiter when working with a horizontal keypad
+        range_limiter = (
+            5
+        )  # increase the range limiter when working with a horizontal keypad
     else:
         range_limiter = 2
 
@@ -69,10 +66,10 @@ def randomly_close(n, layout=mobile):
     for line in sublayout:
         print(line)
 
-
-    sequence = random_sequence(sublayout, n)
+    sequence = random_sequence(sublayout, length)
     print(f'\nFrom this sublayout we have generated a sequence of {sequence}')
     return sequence
+
 
 def available_directions(x, y, layout):
     '''
@@ -82,30 +79,30 @@ def available_directions(x, y, layout):
     '''
     directions = []
     try:
-        if x-1 >= 0:
-            key = layout[y][x-1]
+        if x - 1 >= 0:
+            key = layout[y][x - 1]
             if key is not None:
                 directions.append('left')
     except IndexError:
         pass
 
     try:
-        key = layout[y][x+1]
+        key = layout[y][x + 1]
         if key is not None:
             directions.append('right')
     except IndexError:
         pass
 
     try:
-        if y-1 >= 0:
-            key = layout[y-1][x]
+        if y - 1 >= 0:
+            key = layout[y - 1][x]
             if key is not None:
                 directions.append('up')
     except IndexError:
         pass
 
     try:
-        key = layout[y+1][x]
+        key = layout[y + 1][x]
         if key is not None:
             directions.append('down')
     except IndexError:
@@ -141,7 +138,7 @@ def check_depth(x, y, direction, layout):
         for i in range(5):
             try:
                 increment += 1
-                layout[y][x+increment]
+                layout[y][x + increment]
             except IndexError:
                 increment -= 1
                 depth = increment
@@ -176,7 +173,7 @@ def available_sublayout(x, y, direction, layout, range_limiter=2):
         if direction == 'up':
             if search_depth >= 2:
                 y_start = y - search_depth
-                y_end = y-1
+                y_end = y - 1
             else:
                 y_start = y - search_depth
                 y_end = y
@@ -190,7 +187,6 @@ def available_sublayout(x, y, direction, layout, range_limiter=2):
                 y_end = y + search_depth
 
         y_range = (y_start, y_end)
-
 
     elif direction in ('left', 'right'):
         up_depth = check_depth(x, y, 'up', layout)
@@ -229,7 +225,6 @@ def available_sublayout(x, y, direction, layout, range_limiter=2):
     return sublayout_from_range(x_range, y_range, layout)
 
 
-
 def sublayout_from_range(x_range, y_range, layout):
     '''
     Generate the sublayout from possible x and y ranges in indices
@@ -252,15 +247,10 @@ def random_sequence(layout, n):
     '''
     sequence = []
 
-    flattened = [
-        key for line in layout for key in line if key is not None
-    ]
+    flattened = [key for line in layout for key in line if key is not None]
 
     print(f'Possible Sequence is.. {flattened}')
     for i in range(n):
         sequence.append(random.choice(flattened))
 
     return sequence
-
-
-

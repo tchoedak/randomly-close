@@ -9,4 +9,5 @@ setup(
     author='tchoedak',
     author_email='tchoedak@gmail.com',
     url='https://github.com/tchoedak/randomly_close',
+    install_requires=['Flask']
 )
